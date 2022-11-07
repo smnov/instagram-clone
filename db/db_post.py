@@ -20,16 +20,15 @@ def create(db: Session, request: PostBase):
 def get_all(db: Session):
     return db.query(DbPost).all()
 
-
-def delete_post(id: int, db: Session, user_id: int):
-    current_post = db.query(DbPost).filter(DbPost.id == id).first()
-    if not current_post:
+def delete(id: int, db: Session, user_id: int):
+    post = db.query(DbPost).filter(DbPost.id == id).first()
+    if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                 detail=f'Post with id {id} not found.')
-    if current_post.user_id != user_id:
+    if post.user_id != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                 detail='Only post creator can delete post')
         
-    db.delete(current_post)
+    db.delete(post)
     db.commit()
     return 'Post was succesfully deleted'

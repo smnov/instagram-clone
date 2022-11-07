@@ -45,5 +45,5 @@ def upload_image(image: UploadFile=File(...),
 
 @router.get('/delete/{id}')
 def delete(id: int, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
-    return db_post.delete_post(id, db, current_user.id)
+    return db_post.delete(id, db, current_user.id)
     
