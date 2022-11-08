@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Post.css'
+import { Avatar, Button } from "@mui/material";
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -16,11 +17,15 @@ export default function Post({post}) {
     }, [])
 
     useEffect(() => {
-        setComments(post.comment)
+        setComments(post.comments)
     }, [])
     
     return (
         <div className='post'>
+            <div className="post_header">
+                <Avatar alt="Catalin"
+                        src=""/>
+            </div>
             <img 
                 className='post_image' 
                 src={imageUrl}
@@ -29,10 +34,12 @@ export default function Post({post}) {
             <h4 className='post_text'>{post.caption}</h4>
 
             <div className='post_comments'>
+
         {
             comments?.map((comment) => (
                 <p>
-                    <strong>{comment.username}:</strong> {comment.text}
+                <strong>{comment.username}: </strong>
+                {comment.text}
                 </p>
             ))
         }
