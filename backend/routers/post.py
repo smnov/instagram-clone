@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, status, UploadFile, File
 from sqlalchemy.orm import Session
 from auth.oauth2 import get_current_user
-from routers.schemas import PostBase, UserAuth
+from routers.schemas import PostBase, UserAuth, PostDisplay
 from db.database import get_db
 from fastapi.exceptions import HTTPException
 from db import db_post
+from typing import List
 import random
 import string
 import shutil
@@ -16,7 +17,7 @@ router = APIRouter(
 
 img_url_types = ['absolute', 'relative']
 
-@router.post('')
+@router.post('', response_model=PostDisplay)
 def create_post(request: PostBase, db: Session = Depends(get_db), 
                 current_user: UserAuth = Depends(get_current_user)):
     if not request.image_url_type in img_url_types:
@@ -24,7 +25,7 @@ def create_post(request: PostBase, db: Session = Depends(get_db),
         detail="Parameter image_url_type can only take values 'absolute' or 'relative'")
     return db_post.create(db, request)
 
-@router.get('/all')
+@router.get('/all', response_model=List[PostDisplay])
 def posts(db: Session = Depends(get_db)):
     return db_post.get_all(db)
     

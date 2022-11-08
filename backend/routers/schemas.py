@@ -43,7 +43,7 @@ class PostDisplay(BaseModel):
     image_url: str
     image_url_type: str
     caption: str
-    time_stamp: datetime
+    timestamp: datetime
     user: User
     comments: List[CommentDisplay]
     class Config():
