@@ -9,7 +9,6 @@
     max-width: 500px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 10px 10px;
 
 }
 
@@ -28,3 +27,18 @@
 .post_comments {
     padding: 20px;
 }
+
+.post_header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.post_headerInfo {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
+}
+

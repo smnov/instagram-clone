@@ -25,7 +25,13 @@ export default function Post({post}) {
             <div className="post_header">
                 <Avatar alt="Catalin"
                         src=""/>
+            
+            <div className="post_headerInfo">
+                <h3>{post.user.username}</h3>        
+                <Button className="post_delete">Delete</Button>
             </div>
+            </div>
+
             <img 
                 className='post_image' 
                 src={imageUrl}
