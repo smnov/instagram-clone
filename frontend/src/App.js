@@ -1,8 +1,8 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Post from './components/Post';
-import { Button, Modal } from "@mui/material" 
-import { makeStyles } from "@mui/styles"
+import { Button, Modal, Input, Box } from "@mui/material" 
+import { createTheme } from "@mui/system";
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -16,25 +16,21 @@ function getModalStyle() {
   }
 }
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'absolute',
-    width: 400,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3), 
-  }
-}))
+
+
 
 function App() {
 
-  const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
   const [openSignIn, setOpenSignIn] = useState(false);
   const [openSignUp, setOpenSignUp] = useState(false);
   const [modalStyle, setModalStyle] = useState(getModalStyle);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [authToken, setAuthToken] = useState(null)
+  const [authTokenType, setAuthTokenType] = useState(null)
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     fetch(BASE_URL + 'post/all')
@@ -58,6 +54,10 @@ function App() {
       })
       .then(data => {
         setPosts(data)
+        setAuthToken(data.acess_token)
+        setAuthTokenType(data.token_type)
+        setUserId(data.user_id)
+        setUsername(data.username)
       })
       .catch(error => {
         console.log(error)
@@ -65,18 +65,76 @@ function App() {
       })
     }, [])
 
+  const signIn = (event) => {
+    event.preventDefault();
+
+    let formData = new FormData()
+    formData.append('username', username);
+    formData.append('password', password);
+
+    const requestOptions = {
+      method: 'POST',
+      body: formData
+    }
+
+    fetch(BASE_URL + 'login', requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw response
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error)
+      })
+    setOpenSignIn(false);
+  }
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
   return (
     <div className="app">    
 
     <Modal
       open={openSignIn}
       onClose={() => setOpenSignIn(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          
-        </div>
+        <Box sx={style}>
+          <form className="app_signin">
+            <center>
+              <img className="app_headerImage"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
+                  alt="Instagram" />
+            </center>
+              <Input placeholder="username"
+                     type="text"
+                     value={username}
+                     onChange={(e) => setUsername(e.target.value)} />
+              <Input
+                     placeholder="password"
+                     type="password"
+                     value={password}
+                     onChange={(e) => setPassword(e.target.value)} /> 
+              <Button type="submit"
+                      onClick={signIn}>Login</Button>
+          </form>
+        </Box>
 
     </Modal>
-      <div className="app_header">
+    <div className="app_header">
         <img className="app_headerImage"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
             alt="Instagram" />
