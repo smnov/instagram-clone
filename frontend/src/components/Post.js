@@ -44,9 +44,8 @@ function Post({ post, authToken, authTokenType, username }) {
       })
   }
 
-
   const postComment = (event) => {
-    event?.preventDefault()
+    event?.preventDefault();
 
     const json_string = JSON.stringify({
       'username': username,
@@ -73,7 +72,7 @@ function Post({ post, authToken, authTokenType, username }) {
         fetchComments()
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       })
       .finally(() => {
         setNewComment('')
@@ -81,21 +80,21 @@ function Post({ post, authToken, authTokenType, username }) {
   }
 
   const fetchComments = () => {
-    fetch(BASE_URL + 'comment/all/' + post.id)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        }
-        throw response
-      })
-      .then(data => {
-        setComments(data)
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    fetch(BASE_URL + 'comment/all' + post.id)
+    .then(response => {
+      if (response.ok) {
+        return response.json()
+      }
+      throw response
+    })
+    .then(data => {
+      setComments(data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
-
+ 
   return (
     <div className="post">
       <div className="post_header">
@@ -117,34 +116,34 @@ function Post({ post, authToken, authTokenType, username }) {
 
       <h4 className='post_text'>{post.caption}</h4>
 
-      <div className='post_comments'>
+      <div className="post_comments">
         {
-          comments.map((comment) => (
-            <p>
-              <strong>{comment.username}:</strong> {comment.text}
-            </p>
-          ))
+            comments.map((comment) => (
+                <p>
+                <strong>{comment.username}: </strong>{comment.text}
+                </p>
+            ))
         }
       </div>
-
-      {authToken && (
-        <form className="post_commentbox">
-          <input className="post_input"
-            type="text"
-            placeholder="Add a comment"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-          />
-          <button
-            className="post_button"
-            type="submit"
-            disabled={!newComment}
-            onClick={postComment}>
-              Post
-            </button>
-        </form>
-      )}
+      <div>
+        {authToken && (
+            <form className="post_commentbox">
+                <input className="post_input"
+                    type="text"
+                    placeholder="Add a comment"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}/>
+                <button className="post_button"
+                        type="submit"
+                        disabled={!newComment}
+                        onClick={postComment}>
+                            Post
+                        </button>
+                </form>
+        )}
+      </div>
     </div>
+     
   )
 }
 
