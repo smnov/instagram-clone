@@ -19,27 +19,18 @@ function App() {
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
 
-
   useEffect(() => {
     setAuthToken(window.localStorage.getItem('authToken'));
     setAuthTokenType(window.localStorage.getItem('authTokenType'));
-    setUsername(window.localStorage.getItem('username'));
     setUserId(window.localStorage.getItem('userId'));
+    setUsername(window.localStorage.getItem('username'))
   }, [])
-  
+
   useEffect(() => {
-    authToken
-      ? window.localStorage.setItem('authToken', authToken)
-      : window.localStorage.removeItem('authToken')
-    authTokenType
-      ? window.localStorage.setItem('authTokenType', authTokenType)
-      : window.localStorage.removeItem('authTokenType')
-    username
-      ? window.localStorage.setItem('username', username)
-      : window.localStorage.removeItem('username')
-    userId
-      ? window.localStorage.setItem('userId', userId)
-      : window.localStorage.removeItem('userId')
+    authToken && window.localStorage.setItem('authToken', authToken)
+    authTokenType && window.localStorage.setItem('authTokenType', authTokenType)
+    userId && window.localStorage.setItem('userId', userId)
+    username && window.localStorage.setItem('username', username)
   }, [authToken, authTokenType, userId])
 
   useEffect(() => {
@@ -91,7 +82,6 @@ function App() {
         throw response
       })
       .then(data => {
-        console.log(data);
         setAuthToken(data.access_token);
         setAuthTokenType(data.token_type);
         setUserId(data.user_id);
@@ -109,6 +99,7 @@ function App() {
     setAuthTokenType(null)
     setUserId('')
     setUsername('')
+    localStorage.clear()
   }
 
   const signUp = (event) => {
@@ -122,7 +113,7 @@ function App() {
 
     const requestOption = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: json_string
 
     }
@@ -157,6 +148,7 @@ function App() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    maxWidth: '70%',
 };
 
   return (
@@ -191,7 +183,7 @@ function App() {
 
     <Modal
       open={openSignUp}
-      onClose={() => setOpenSignIn(false)}>
+      onClose={() => setOpenSignUp(false)}>
         <Box sx={style}>
           <form className="app_signin">
             <center>
@@ -226,7 +218,7 @@ function App() {
             alt="Instagram" />
         
         {authToken ? (
-          <Button onClick={() => signOut}>Logout</Button>
+          <Button onClick={() => signOut()}>Logout</Button>
           ) : (
           <div>
                <Button onClick={() => setOpenSignIn(true)}>Login</Button>

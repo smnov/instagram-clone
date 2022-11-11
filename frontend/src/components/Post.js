@@ -11,16 +11,16 @@ function Post({ post, authToken, authTokenType, username }) {
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
-    if (post.image_url_type == 'absolute') {
+    if (post.image_url_type === 'absolute') {
       setImageUrl(post.image_url)
     } else {
       setImageUrl(BASE_URL + post.image_url)
     }
-  }, [])
+  }, [post.image_url, post.image_url_type])
 
   useEffect(() => {
     setComments(post.comments)
-  }, [])
+  }, [post.comments])
 
   const handleDelete = (event) => {
     event?.preventDefault();
@@ -45,7 +45,7 @@ function Post({ post, authToken, authTokenType, username }) {
   }
 
   const postComment = (event) => {
-    event?.preventDefault();
+    event?.preventDefault()
 
     const json_string = JSON.stringify({
       'username': username,
@@ -72,7 +72,7 @@ function Post({ post, authToken, authTokenType, username }) {
         fetchComments()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
       })
       .finally(() => {
         setNewComment('')
@@ -80,19 +80,19 @@ function Post({ post, authToken, authTokenType, username }) {
   }
 
   const fetchComments = () => {
-    fetch(BASE_URL + 'comment/all' + post.id)
-    .then(response => {
-      if (response.ok) {
-        return response.json()
-      }
-      throw response
-    })
-    .then(data => {
-      setComments(data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    fetch(BASE_URL + 'comment/all/' + post.id)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw response
+      })
+      .then(data => {
+        setComments(data)
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
  
   return (
@@ -112,6 +112,7 @@ function Post({ post, authToken, authTokenType, username }) {
       <img
         className="post_image"
         src={imageUrl}
+        alt=""
       />
 
       <h4 className='post_text'>{post.caption}</h4>
