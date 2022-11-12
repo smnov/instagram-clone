@@ -84,7 +84,7 @@ function ImageUpload({authToken, authTokenType, userId, setUpload}) {
   }
 
   return (
-      <form className='app_signin'>
+      <form className='upload_modal'>
       <input 
         type="text"
         placeholder="Enter a caption"
@@ -96,7 +96,9 @@ function ImageUpload({authToken, authTokenType, userId, setUpload}) {
         id="fileInput"
         onChange={handleChange}
       />
-      <Button className="imageupload_button" onClick={handleUpload}>
+      <Button className="imageupload_button"
+              variant="contained"
+              onClick={handleUpload}>
         Upload
       </Button>
       </form>

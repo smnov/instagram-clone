@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import { Link} from 'react-router-dom';
 import Post from './components/Post';
 import { Button, Modal, Input, Box } from "@mui/material" 
 import ImageUpload from './components/ImageUpload'
@@ -155,9 +156,6 @@ function App() {
     maxWidth: '70%',
 };
 
-const click = () => {
-  console.log('click')
-}
   return (
     <div className="app">   
     <Modal
@@ -231,6 +229,7 @@ const click = () => {
 
     <div className="app_header">
         <img className="app_headerImage"
+            href="/"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
             alt="Instagram" />
         
