@@ -4,7 +4,7 @@ import './ImageUpload.css'
 
 const BASE_URL = 'http://localhost:8000/'
 
-function ImageUpload({authToken, authTokenType, userId}) {
+function ImageUpload({authToken, authTokenType, userId, setUpload}) {
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState(null);
 
@@ -80,10 +80,11 @@ function ImageUpload({authToken, authTokenType, userId}) {
       .catch(error => {
         console.log(error);
       })
+      setUpload(false);
   }
 
   return (
-    <div className="image_upload">
+      <form className='app_signin'>
       <input 
         type="text"
         placeholder="Enter a caption"
@@ -98,7 +99,7 @@ function ImageUpload({authToken, authTokenType, userId}) {
       <Button className="imageupload_button" onClick={handleUpload}>
         Upload
       </Button>
-    </div>
+      </form>
   )
 }
 

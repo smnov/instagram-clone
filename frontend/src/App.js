@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Post from './components/Post';
 import { Button, Modal, Input, Box } from "@mui/material" 
 import ImageUpload from './components/ImageUpload'
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IconButton from '@mui/material/IconButton';
+
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -11,6 +14,7 @@ function App() {
 
   const [posts, setPosts] = useState([]);
   const [openSignIn, setOpenSignIn] = useState(false);
+  const [upload, setUpload] = useState(false);
   const [openSignUp, setOpenSignUp] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -151,9 +155,22 @@ function App() {
     maxWidth: '70%',
 };
 
+const click = () => {
+  console.log('click')
+}
   return (
-    <div className="app">    
-
+    <div className="app">   
+    <Modal
+      open={upload}
+      onClose={() => setUpload(false)}>
+        <Box sx={style}>
+        <ImageUpload 
+        authToken={authToken}
+        authTokenType={authTokenType}
+        userId={userId}
+        setUpload={setUpload}/>
+        </Box>
+      </Modal>
     <Modal
       open={openSignIn}
       onClose={() => setOpenSignIn(false)}>
@@ -218,6 +235,18 @@ function App() {
             alt="Instagram" />
         
         {authToken ? (
+          <div className="uploadButton">
+          <IconButton color="primary" size="large"
+                      onClick={() => setUpload(true)}>
+            <AddBoxIcon 
+            fontSize="inherit"/>
+          </IconButton>
+          </div>
+          ) : (
+            <div></div>
+          )
+      }
+        {authToken ? (
           <Button onClick={() => signOut()}>Logout</Button>
           ) : (
           <div>
@@ -240,17 +269,6 @@ function App() {
             />)
       )} 
     </div>
-
-    { authToken ? (
-      <ImageUpload 
-        authToken={authToken}
-        authTokenType={authTokenType}
-        userId={userId}
-      />
-    ) : (
-      <h3>You need to login to upload</h3>
-    )
-  }
     </div>
 
   );
