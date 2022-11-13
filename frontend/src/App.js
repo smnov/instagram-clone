@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Post from './components/Post';
 import { Button, Modal, Input, Box } from "@mui/material" 
 import ImageUpload from './components/ImageUpload'
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -12,6 +13,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [openSignIn, setOpenSignIn] = useState(false);
   const [openSignUp, setOpenSignUp] = useState(false);
+  const [openUpload, setOpenUpload] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [authToken, setAuthToken] = useState(null)
@@ -152,7 +154,18 @@ function App() {
 };
 
   return (
-    <div className="app">    
+    <div className="app">   
+    <Modal
+      open={openUpload}
+      onClose={() => setOpenUpload(false)}>
+      <Box sx={style}>
+      <ImageUpload 
+        authToken={authToken}
+        authTokenType={authTokenType}
+        userId={userId}
+      />
+      </Box>
+      </Modal> 
 
     <Modal
       open={openSignIn}
@@ -216,6 +229,12 @@ function App() {
         <img className="app_headerImage"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
             alt="Instagram" />
+        {authToken ? (
+          <Button startIcon={<AddBoxIcon/>} onClick={() => setOpenUpload(true)}>Upload</Button>
+        ) : (
+          <div></div>
+        )}
+
         
         {authToken ? (
           <Button onClick={() => signOut()}>Logout</Button>
@@ -240,17 +259,6 @@ function App() {
             />)
       )} 
     </div>
-
-    { authToken ? (
-      <ImageUpload 
-        authToken={authToken}
-        authTokenType={authTokenType}
-        userId={userId}
-      />
-    ) : (
-      <h3>You need to login to upload</h3>
-    )
-  }
     </div>
 
   );

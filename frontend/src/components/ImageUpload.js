@@ -83,6 +83,7 @@ function ImageUpload({authToken, authTokenType, userId}) {
   }
 
   return (
+    <form>
     <div className="image_upload">
       <input 
         type="text"
@@ -99,6 +100,7 @@ function ImageUpload({authToken, authTokenType, userId}) {
         Upload
       </Button>
     </div>
+    </form>
   )
 }
 
